@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require('dotenv').config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -10,6 +11,11 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
+
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
+
+const ROPSTEN_PRIVATE_KEY = process.env.ROPSTEN_PRIVATE_KEY;
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -18,4 +24,10 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  */
 module.exports = {
   solidity: "0.8.4",
+  networks: {
+    ropsten: {
+      url: process.env.ROPSTEN_URL,
+      accounts: [`${ROPSTEN_PRIVATE_KEY}`]
+    }
+  }
 };

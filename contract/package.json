@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.5.0",
-    "save-dev": "0.0.1-security"
+    "dotenv": "^16.0.0"
   }
 }
