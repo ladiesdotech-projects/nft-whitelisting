@@ -10,7 +10,7 @@ const generateWhitelistRoot = () => {
   const whitelistRootHash = whitelistMerkleTree.getHexRoot();
 
   const leaf = keccak256("0xdcefC49F4F8Abc6fDf5e1B0AcaCC5A4e8FE6dbA2");
-  const proof = whitelistMerkleTree.getProof(leaf);
+  const proof = whitelistMerkleTree.getHexProof(leaf);
   const verifyProof = whitelistMerkleTree.verify(
     proof,
     leaf,
