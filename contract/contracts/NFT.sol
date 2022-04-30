@@ -26,13 +26,13 @@ contract NFTWhitelist is ERC721URIStorage, Ownable {
     }
 
     function claim(address to, string memory _tokenURI, bytes32[] calldata proof) external {
-        require( to != address(0), "to is the zero address");
+        require( to != address(0), "this is a zero address");
        uint256 newItemId = _tokenIds.current();
        if(claimed[to]) revert AlreadyClaimed();
 
        // verify merkle proof
        bytes32 leaf = keccak256(abi.encodePacked(to));
-       bool isValid = MerkleProof.verify(proof, leaf, merkleRoot);
+       bool isValid = MerkleProof.verify(proof, merkleRoot, leaf);
        if(!isValid) revert  NotWhitelisted();
 
        claimed[to] = true;
@@ -44,8 +44,8 @@ contract NFTWhitelist is ERC721URIStorage, Ownable {
         emit Claimed(to, newItemId);
     }
 
-    function changeMerkleRoot(bytes32 _merkleRoot) external {
-        require( _merkleRoot != bytes32(0), "merkleRoot is the zero address");
+    function changeMerkleRoot(bytes32 _merkleRoot) external onlyOwner {
+        require( _merkleRoot != bytes32(0), "merkleRoot is the zero bytes32");
         merkleRoot = _merkleRoot;
     }
 
