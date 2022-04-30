@@ -14,7 +14,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
 
-const ROPSTEN_PRIVATE_KEY = process.env.ROPSTEN_PRIVATE_KEY;
+const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -25,9 +25,9 @@ const ROPSTEN_PRIVATE_KEY = process.env.ROPSTEN_PRIVATE_KEY;
 module.exports = {
   solidity: "0.8.4",
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL,
-      accounts: [`${ROPSTEN_PRIVATE_KEY}`]
+    rinkeby: {
+      url: process.env.RINKEBY_URL,
+      accounts: [`${RINKEBY_PRIVATE_KEY}`]
     }
   }
 };
