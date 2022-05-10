@@ -1,32 +1,37 @@
-import { useAppContext } from "../context/state";
-import Link from "next/link";
-import { ethers } from "ethers";
-import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
-import { useEffect, useRef } from "react";
-import { Contract, utils } from "ethers";
-import { abi, NFT_CONTRACT_ADDRESS } from "../constants";
+import { useAppContext } from '../context/state'
+import Link from 'next/link'
+import { ethers } from 'ethers'
+import Web3Modal from 'web3modal'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
+import { useEffect, useRef } from 'react'
+import { Contract, utils } from 'ethers'
+import { abi, NFT_CONTRACT_ADDRESS } from '../constants'
+
+//  toast.error('you cannot stake less than or equal to 0 tokens')
+//  toast.success('Investment successful')
 
 export default function Navbar() {
   const providerOptions = {
     walletlink: {
       package: CoinbaseWalletSDK,
       options: {
-        appName: "Web 3 Modal Demo",
-        infuraId: "2007d5f12608499d9cbddfe532a9759b",
+        appName: 'Web 3 Modal Demo',
+        infuraId: '2007d5f12608499d9cbddfe532a9759b',
       },
     },
     walletconnect: {
       package: WalletConnectProvider,
       options: {
-        infuraId: "434d293815cd474081e89aefc46a5371",
+        infuraId: '434d293815cd474081e89aefc46a5371',
       },
     },
     binancechainwallet: {
-      package: true
-    }
-  };
+      package: true,
+    },
+  }
 
   const {
     connected,
@@ -37,89 +42,90 @@ export default function Navbar() {
     setSigner,
     network,
     setNetwork,
-    accounts,
+    account,
     setAccount,
     setProvider,
     setMintedNfts,
     tokenIds,
-  } = useAppContext();
+  } = useAppContext()
 
-  const web3ModalRef = useRef();
+  const web3ModalRef = useRef()
 
   const connectWallet = async () => {
     try {
-      const provider = await web3ModalRef.current.connect();
-      const library = new ethers.providers.Web3Provider(provider);
-      const { chainId } = await library.getNetwork();
+      const provider = await web3ModalRef.current.connect()
+      const library = new ethers.providers.Web3Provider(provider)
+      const { chainId } = await library.getNetwork()
 
       if (chainId !== 4) {
-        window.alert("Change the network to Rinkeby");
-        throw new Error("Change network to Rinkeby");
+        window.alert('Change the network to Rinkeby')
+        throw new Error('Change network to Rinkeby')
       }
 
-      const accounts = await library.listAccounts();
-      const network = await library.getNetwork().name;
-      const signer = library.getSigner();
-      setProvider(provider);
-      setLibrary(library);
-      setSigner(signer);
-      setConnected(true);
-      if (accounts) setAccount(accounts[0]);
-      setNetwork(network);
+      const accounts = await library.listAccounts()
+      const network = await library.getNetwork().name
+      const signer = library.getSigner()
+      setProvider(provider)
+      setLibrary(library)
+      setSigner(signer)
+      setConnected(true)
+      if (accounts) setAccount(accounts[0])
+      setNetwork(network)
+      console.log(account)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const refreshState = () => {
-    setConnected(false);
-  };
+    setConnected(false)
+  }
 
   const disconnectWallet = async () => {
-    await web3ModalRef.current.clearCachedProvider();
-    refreshState();
-    setConnected(false);
-  };
+    await web3ModalRef.current.clearCachedProvider()
+    refreshState()
+    setConnected(false)
+  }
 
   useEffect(() => {
     if (connected == false) {
       web3ModalRef.current = new Web3Modal({
-        network: "rinkeby",
+        network: 'rinkeby',
         cacheProvider: true,
         // disableInjectedProvider: true,
         providerOptions,
-      });
+      })
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    if (web3ModalRef.current.cachedProvider) {
-      connectWallet();
+    if (web3ModalRef?.current?.cachedProvider) {
+      connectWallet()
     }
-  }, []);
+  }, [])
 
   const getMintedNfts = async () => {
     try {
-      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
-      const mintedTokenIds = await nftContract.getArrp();
-      const mintedNfts = mintedTokenIds.map((elem) => elem.toNumber());
-      console.log(mintedNfts);
-      setMintedNfts(mintedNfts);
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer)
+      const mintedTokenIds = await nftContract.getArrp()
+      const mintedNfts = mintedTokenIds.map((elem) => elem.toNumber())
+      console.log(mintedNfts)
+      setMintedNfts(mintedNfts)
     } catch (err) {
-      console.log("Retry");
+      console.log('Retry')
     }
-  };
+  }
 
   useEffect(() => {
     if (connected) {
-      getMintedNfts();
+      getMintedNfts()
     }
-  }, [signer, tokenIds]);
+  }, [signer, tokenIds])
 
   return (
     <header>
-      <nav className="navbar navbar-expand-md navbar-light p-0 m-0">
-        <div className="container-fluid p-0 m-0">
+      <nav className="navbar navbar-expand-md navbar-light m-0 p-0">
+        <div className="container-fluid m-0 p-0">
           <Link href="/">
             <a className="navbar-brand fa">G3L Web3Ladies</a>
           </Link>
@@ -140,12 +146,12 @@ export default function Navbar() {
             <ul
               className="navbar-nav"
               style={{
-                width: "95%",
-                display: "flex",
-                "-webkit-box-pack": "end",
-                "-webkit-justify-content": "flex-end",
-                "-ms-flex-pack": "end",
-                "justify-content": "flex-end",
+                width: '95%',
+                display: 'flex',
+                '-webkit-box-pack': 'end',
+                '-webkit-justify-content': 'flex-end',
+                '-ms-flex-pack': 'end',
+                'justify-content': 'flex-end',
               }}
             >
               <li className="nav-item"></li>
@@ -153,7 +159,7 @@ export default function Navbar() {
                 <Link href="/">
                   <a
                     className="nav-link"
-                    style={{ color: "rgb(134, 132, 132)" }}
+                    style={{ color: 'rgb(134, 132, 132)' }}
                     aria-current="page"
                   >
                     Home
@@ -176,15 +182,15 @@ export default function Navbar() {
               {connected ? (
                 <li
                   className="nav-item"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                   onClick={disconnectWallet}
                 >
                   <a
                     className="nav-link button contact"
                     style={{
-                      "padding-left": "20px",
-                      "padding-right": "20px",
-                      color: "lightgray",
+                      'padding-left': '20px',
+                      'padding-right': '20px',
+                      color: 'lightgray',
                     }}
                   >
                     Disconnect wallet
@@ -194,15 +200,15 @@ export default function Navbar() {
                 <li
                   className="nav-item"
                   id="connectBtn"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                   onClick={connectWallet}
                 >
                   <a
                     className="nav-link button contact"
                     style={{
-                      "padding-left": "20px",
-                      "padding-right": "20px",
-                      color: "white",
+                      'padding-left': '20px',
+                      'padding-right': '20px',
+                      color: 'white',
                     }}
                   >
                     Connect wallet
@@ -214,5 +220,5 @@ export default function Navbar() {
         </div>
       </nav>
     </header>
-  );
+  )
 }
