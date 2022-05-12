@@ -1,4 +1,3 @@
-// import { useAppContext } from "../context/state";
 import Link from "next/link";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
@@ -27,22 +26,6 @@ export default function Navbar() {
   //     package: true
   //   }
   // };
-
-  // const {
-  //   connected,
-  //   setConnected,
-  //   library,
-  //   setLibrary,
-  //   signer,
-  //   setSigner,
-  //   network,
-  //   setNetwork,
-  //   accounts,
-  //   setAccount,
-  //   setProvider,
-  //   setMintedNfts,
-  //   tokenIds,
-  // } = useAppContext();
 
   // const web3ModalRef = useRef();
 
@@ -127,61 +110,6 @@ export default function Navbar() {
   //   return web3Provider;
   // };
 
-  // const addAddressToWhitelist = async () => {
-  //   try {
-  //     const signer = await getProviderOrSigner(true);
-  //     const whitelistContract = new Contract(
-  //       NFT_CONTRACT_ADDRESS, 
-  //       abi,
-  //       signer
-  //     );
-  //     const tx = await whitelistContract.addAddressToWhitelist();
-  //     setLoading(true);
-  //     await tx.wait();
-  //     setLoading(false);
-  //     await getNumberOfWhitelisted();
-  //     setJoinedWhitelist(true);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  // const getNumberOfWhitelisted = async () => {
-  //   try {
-  //     const provider = await getProviderOrSigner();
-  //    const whitelistContract = new Contract(
-  //       NFT_CONTRACT_ADDRESS,
-  //       abi,
-  //       provider
-  //     );
-  //     const _numberOfWhitelisted = await whitelistContract.numAddressesWhitelisted();
-  //     setNumberOfWhitelisted(_numberOfWhitelisted);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  // const checkIfAddressInWhitelist = async () => {
-  //   try {
-  //    const signer = await getProviderOrSigner(true);
-  //     const whitelistContract = new Contract(
-  //       NFT_CONTRACT_ADDRESS,
-  //       abi,
-  //       signer
-  //     );
-  //     const address = await signer.getAddress();
-  //     // console.log(address)
-  //     const _joinedWhitelist = await whitelistContract.whitelistedAddresses(
-  //       address
-  //     );
-  //     setJoinedWhitelist(_joinedWhitelist);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  
-
   // const connectWallet = async () => {
   //   try {
   //     await getProviderOrSigner();
@@ -220,59 +148,6 @@ export default function Navbar() {
   //     connectWallet();
   //   }
   // }, []);
-
-  // const getMintedNfts = async () => {
-  //   try {
-  //     const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
-  //     const mintedTokenIds = await nftContract.getArrp();
-  //     const mintedNfts = mintedTokenIds.map((elem) => elem.toNumber());
-  //     console.log(mintedNfts);
-  //     setMintedNfts(mintedNfts);
-  //   } catch (err) {
-  //     console.log("Retry");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (connected) {
-  //     getMintedNfts();
-  //   }
-  // }, [signer, tokenIds]);
-
-  const providerOptions = {
-    walletlink: {
-      package: CoinbaseWalletSDK,
-      options: {
-        appName: "Web 3 Modal Demo",
-        infuraId: "2007d5f12608499d9cbddfe532a9759b",
-      },
-    },
-    walletconnect: {
-      package: WalletConnectProvider,
-      options: {
-        infuraId: "434d293815cd474081e89aefc46a5371",
-      },
-    },
-    binancechainwallet: {
-      package: true
-    }
-  };
-  
-  const connectWalletTest = async () => {
-    const web3Modal = new Web3Modal({
-      network: "rinkeby",
-      providerOptions // required
-    });
-    
-    const instance = await web3Modal.connect();
-    
-    const provider = new ethers.providers.Web3Provider(instance);
-    const signer = provider.getSigner();
-  };
-
-  
-  
-  
 
   return (
     <header>
