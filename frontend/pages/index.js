@@ -79,7 +79,7 @@ export default function Home() {
       console.log(result)
       toast.success('Successfully claimed NFT')
     } catch (err) {
-      console.error(err)
+      // console.error(err)
       toast.error('Error claiming NFT')
     }
   }

@@ -86,6 +86,7 @@ export default function Navbar() {
     await web3ModalRef.current.clearCachedProvider()
     refreshState()
     setConnected(false)
+    toast.success('Wallet DisConnected')
   }
 
   useEffect(() => {
@@ -127,6 +128,7 @@ export default function Navbar() {
     <header>
       <nav className="navbar navbar-expand-md navbar-light m-0 p-0">
         <div className="container-fluid m-0 p-0">
+          <ToastContainer />
           <Link href="/">
             <a className="navbar-brand fa">G3L Web3Ladies</a>
           </Link>
