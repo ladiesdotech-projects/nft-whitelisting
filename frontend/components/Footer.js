@@ -1,7 +1,7 @@
 export default function Footer() {
     return (
       <div>
-        <footer>
+        <footer className="fixed-bottom w-100 ">
           <div
             id="footer"
             className="d-flex justify-content-between container align-items-center p-3"
@@ -22,7 +22,7 @@ export default function Footer() {
                 <i className="fab fa-twitter me-3" />
               </a>
               <a
-                href="https://www.linkedin.com/in/casweeney-ojukwu-93274a137/"
+                href="https://www.linkedin.com/in/emmaglorypraise/"
                 target="_"
               >
                 <i className="fab fa-linkedin me-3" />

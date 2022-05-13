@@ -1,128 +1,153 @@
-import { useAppContext } from '../context/state'
-import Link from 'next/link'
-import { ethers } from 'ethers'
-import Web3Modal from 'web3modal'
-import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer, toast } from 'react-toastify'
-import WalletConnectProvider from '@walletconnect/web3-provider'
-import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
-import { useEffect, useRef } from 'react'
-import { Contract, utils } from 'ethers'
-import { abi, NFT_CONTRACT_ADDRESS } from '../constants'
-
-//  toast.error('you cannot stake less than or equal to 0 tokens')
-//  toast.success('Investment successful')
+import Link from "next/link";
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import { useEffect, useRef } from "react";
+import { providers, Contract } from "ethers";
+import { abi, NFT_CONTRACT_ADDRESS } from "../constants";
 
 export default function Navbar() {
-  const providerOptions = {
-    walletlink: {
-      package: CoinbaseWalletSDK,
-      options: {
-        appName: 'Web 3 Modal Demo',
-        infuraId: '2007d5f12608499d9cbddfe532a9759b',
-      },
-    },
-    walletconnect: {
-      package: WalletConnectProvider,
-      options: {
-        infuraId: '434d293815cd474081e89aefc46a5371',
-      },
-    },
-    binancechainwallet: {
-      package: true,
-    },
-  }
+  // const providerOptions = {
+  //   walletlink: {
+  //     package: CoinbaseWalletSDK,
+  //     options: {
+  //       appName: "Web 3 Modal Demo",
+  //       infuraId: "2007d5f12608499d9cbddfe532a9759b",
+  //     },
+  //   },
+  //   walletconnect: {
+  //     package: WalletConnectProvider,
+  //     options: {
+  //       infuraId: "434d293815cd474081e89aefc46a5371",
+  //     },
+  //   },
+  //   binancechainwallet: {
+  //     package: true
+  //   }
+  // };
 
-  const {
-    connected,
-    setConnected,
-    library,
-    setLibrary,
-    signer,
-    setSigner,
-    network,
-    setNetwork,
-    account,
-    setAccount,
-    setProvider,
-    setMintedNfts,
-    tokenIds,
-  } = useAppContext()
+  // const web3ModalRef = useRef();
 
-  const web3ModalRef = useRef()
+  // const connectWallet = async () => {
+  //   try {
+  //     const provider = await web3ModalRef.current.connect();
+  //     const library = new ethers.providers.Web3Provider(provider);
+  //     const { chainId } = await library.getNetwork();
 
-  const connectWallet = async () => {
-    try {
-      const provider = await web3ModalRef.current.connect()
-      const library = new ethers.providers.Web3Provider(provider)
-      const { chainId } = await library.getNetwork()
+  //     if (chainId !== 4) {
+  //       window.alert("Change the network to Rinkeby");
+  //       throw new Error("Change network to Rinkeby");
+  //     }
 
-      if (chainId !== 4) {
-        window.alert('Change the network to Rinkeby')
-        throw new Error('Change network to Rinkeby')
-      }
+  //     const accounts = await library.listAccounts();
+  //     const network = await library.getNetwork().name;
+  //     const signer = library.getSigner();
+  //     setProvider(provider);
+  //     setLibrary(library);
+  //     setSigner(signer);
+  //     setConnected(true);
+  //     if (accounts) setAccount(accounts[0]);
+  //     setNetwork(network);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-      const accounts = await library.listAccounts()
-      const network = await library.getNetwork().name
-      const signer = library.getSigner()
-      setProvider(provider)
-      setLibrary(library)
-      setSigner(signer)
-      setConnected(true)
-      if (accounts) setAccount(accounts[0])
-      setNetwork(network)
-      toast.success('Wallet Connect successful')
-    } catch (error) {
-      console.error(error)
-      toast.error('Wallet Connect unsuccessful')
-    }
-  }
+  
+  // const [walletConnected, setWalletConnected] = useState(false);
+  // // const [joinedWhitelist, setJoinedWhitelist] = useState(false);
+  // // const [loading, setLoading] = useState(false);
+  // // const [numberOfWhitelisted, setNumberOfWhitelisted] = useState(0);
+  // const web3ModalRef = useRef();
 
-  const refreshState = () => {
-    setConnected(false)
-  }
+  // const providerOptions = {
+  //   walletlink: {
+  //     package: CoinbaseWalletSDK,
+  //     options: {
+  //       appName: "Web3 Ladies Group3 Project",
+  //       infuraId: "2007d5f12608499d9cbddfe532a9759b",
+  //     },
+  //   },
+  //   walletconnect: {
+  //     package: WalletConnectProvider,
+  //     options: {
+  //       infuraId: "434d293815cd474081e89aefc46a5371",
+  //     },
+  //   },
+  //   binancechainwallet: {
+  //     package: true
+  //   }
+  // };
 
-  const disconnectWallet = async () => {
-    await web3ModalRef.current.clearCachedProvider()
-    refreshState()
-    setConnected(false)
-    toast.success('Wallet DisConnected')
-  }
+  // useEffect(() => {
+  //   if (!walletConnected) {
+  //     web3ModalRef.current = new Web3Modal({
+  //       network: "rinkeby",
+  //       providerOptions: {},
+  //       disableInjectedProvider: false,
+  //       providerOptions 
+  //     });
+  //     connectWallet();
+  //   }
+  // }, [walletConnected]);
 
-  useEffect(() => {
-    if (connected == false) {
-      web3ModalRef.current = new Web3Modal({
-        network: 'rinkeby',
-        cacheProvider: true,
-        // disableInjectedProvider: true,
-        providerOptions,
-      })
-    }
-  }, [])
 
-  useEffect(() => {
-    if (web3ModalRef?.current?.cachedProvider) {
-      connectWallet()
-    }
-  }, [])
+  // const getProviderOrSigner = async (needSigner = false) => {
+  //   const provider = await web3ModalRef.current.connect();
+  //   const web3Provider = new ethers.providers.Web3Provider(provider);
 
-  const getMintedNfts = async () => {
-    try {
-      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer)
-      const mintedTokenIds = await nftContract.getArrp()
-      const mintedNfts = mintedTokenIds.map((elem) => elem.toNumber())
-      console.log(mintedNfts)
-      setMintedNfts(mintedNfts)
-    } catch (err) {
-      console.log('Retry')
-    }
-  }
+  //   const { chainId } = await web3Provider.getNetwork();
+  //   if (chainId !== 4) {
+  //     window.alert("Change the network to Rinkeby");
+  //     throw new Error("Change network to Rinkeby");
+  //   }
 
-  useEffect(() => {
-    if (connected) {
-      getMintedNfts()
-    }
-  }, [signer, tokenIds])
+  //   if (needSigner) {
+  //     const signer = web3Provider.getSigner();
+  //     return signer;
+  //   }
+  //   return web3Provider;
+  // };
+
+  // const connectWallet = async () => {
+  //   try {
+  //     await getProviderOrSigner();
+  //     setWalletConnected(true);
+
+  //     // checkIfAddressInWhitelist();
+  //     // getNumberOfWhitelisted();
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  // const refreshState = () => {
+  //   setConnected(false);
+  // };
+
+  // const disconnectWallet = async () => {
+  //   await web3ModalRef.current.clearCachedProvider();
+  //   refreshState();
+  //   setConnected(false);
+  // };
+
+  // useEffect(() => {
+  //   if (connected == false) {
+  //     web3ModalRef.current = new Web3Modal({
+  //       network: "rinkeby",
+  //       cacheProvider: true,
+  //       // disableInjectedProvider: true,
+  //       providerOptions,
+  //     });
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (web3ModalRef.current.cachedProvider) {
+  //     connectWallet();
+  //   }
+  // }, []);
 
   return (
     <header>
@@ -169,20 +194,40 @@ export default function Navbar() {
                   </a>
                 </Link>
               </li>
-              {/* <li className="nav-item">
-                <a
-                  className="nav-link"
-                  href="#mint-section"
-                  style={{
-                    "padding-right": "20px",
-                    color: "rgb(134, 132, 132)",
-                  }}
+              <li
+                  className="nav-item"
+                  style={{ cursor: "pointer" }}
+                  onClick={connectWalletTest}
                 >
-                  Mint
-                </a>
-              </li> */}
-
-              {connected ? (
+                  <a
+                    className="nav-link button contact"
+                    style={{
+                      "padding-left": "20px",
+                      "padding-right": "20px",
+                      color: "lightgray",
+                    }}
+                  >
+                    Connected
+                  </a>
+                </li>
+              
+<li
+                  className="nav-item"
+                  style={{ cursor: "pointer" }}
+                  onClick={connectWalletTest}
+                >
+                  <a
+                    className="nav-link button contact"
+                    style={{
+                      "padding-left": "20px",
+                      "padding-right": "20px",
+                      color: "lightgray",
+                    }}
+                  >
+                    Connect
+                  </a>
+                </li>
+              {/* {connected ? (
                 <li
                   className="nav-item"
                   style={{ cursor: 'pointer' }}
@@ -217,7 +262,7 @@ export default function Navbar() {
                     Connect wallet
                   </a>
                 </li>
-              )}
+              )} */}
             </ul>
           </div>
         </div>
