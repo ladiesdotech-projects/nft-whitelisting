@@ -71,9 +71,10 @@ export default function Navbar() {
       setConnected(true)
       if (accounts) setAccount(accounts[0])
       setNetwork(network)
-      console.log(account)
+      toast.success('Wallet Connect successful')
     } catch (error) {
       console.error(error)
+      toast.error('Wallet Connect unsuccessful')
     }
   }
 

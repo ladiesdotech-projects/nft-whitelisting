@@ -3,10 +3,14 @@ import Head from 'next/head'
 // import arts from "../utils/arts";
 import Link from 'next/link'
 import { useAppContext } from '../context/state'
-import { NFT_CONTRACT_ADDRESS, abi } from '../constants'
-import { useEffect } from 'react'
-import { Contract } from 'ethers'
-import { useState } from 'react'
+import { NFT_CONTRACT_ADDRESS, abi, config } from '../constants'
+import { useEffect, useState } from 'react'
+import keccak256 from 'keccak256'
+import { ethers, Contract } from 'ethers'
+import { MerkleTree } from 'merkletreejs'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify'
+
 export default function Home() {
   const { connected, tokenIds, setTokenIds, library } = useAppContext()
   const [_document, set_document] = useState(null)
@@ -21,10 +25,6 @@ export default function Home() {
     } catch (err) {
       console.error(err)
     }
-  }
-
-  const claimNFT = async (e) => {
-    e.preventDefault()
   }
 
   useEffect(() => {
@@ -46,63 +46,43 @@ export default function Home() {
       <button
         className="mint"
         href="#mint-section"
-        onClick={(e) => claimNFT(e)}
+        onClick={(e) => onClickMint(e)}
       >
         Claim Whitelist
       </button>
     </Link>
   )
 
-  /**
-   * addAddressToWhitelist: Adds the current connected address to the whitelist
-   */
-  // const addAddressToWhitelist = async () => {
-  //   try {
-  //     // We need a Signer here since this is a 'write' transaction.
-  //     const signer = await getProviderOrSigner(true);
-  //     // Create a new instance of the Contract with a Signer, which allows
-  //     // update methods
-  //     const whitelistContract = new Contract(
-  //       WHITELIST_CONTRACT_ADDRESS,
-  //       abi,
-  //       signer
-  //     );
-  //     // call the addAddressToWhitelist from the contract
-  //     const tx = await whitelistContract.addAddressToWhitelist();
-  //     setLoading(true);
-  //     // wait for the transaction to get mined
-  //     await tx.wait();
-  //     setLoading(false);
-  //     // get the updated number of addresses in the whitelist
-  //     await getNumberOfWhitelisted();
-  //     setJoinedWhitelist(true);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  /**
-   * getNumberOfWhitelisted:  gets the number of whitelisted addresses
-   */
-  // const getNumberOfWhitelisted = async () => {
-  //   try {
-  //     // Get the provider from web3Modal, which in our case is MetaMask
-  //     // No need for the Signer here, as we are only reading state from the blockchain
-  //     const provider = await getProviderOrSigner();
-  //     // We connect to the Contract using a Provider, so we will only
-  //     // have read-only access to the Contract
-  //     const whitelistContract = new Contract(
-  //       WHITELIST_CONTRACT_ADDRESS,
-  //       abi,
-  //       provider
-  //     );
-  //     // call the numAddressesWhitelisted from the contract
-  //     const _numberOfWhitelisted = await whitelistContract.numAddressesWhitelisted();
-  //     setNumberOfWhitelisted(_numberOfWhitelisted);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  const onClickMint = async (e) => {
+    e.preventDefault()
+    // get address and signer
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const accounts = await provider.listAccounts()
+      const signer = provider.getSigner()
+      // generate proof
+      const leaf = keccak256(accounts[0])
+      const leaves = config.addresses.map((x) => keccak256(x))
+      const tree = new MerkleTree(leaves, keccak256, { sortPairs: true })
+      const proof = tree.getHexProof(leaf)
+      const NFTContractInstance = new Contract(
+        NFT_CONTRACT_ADDRESS,
+        abi,
+        signer
+      )
+      const claimTx = await NFTContractInstance.claim(
+        accounts[0],
+        'ipfs://unknown',
+        proof
+      )
+      const result = await claimTx.wait()
+      console.log(result)
+      toast.success('Successfully claimed NFT')
+    } catch (err) {
+      console.error(err)
+      toast.error('Error claiming NFT')
+    }
+  }
 
   const connectWalletNavBtn = (
     <li
