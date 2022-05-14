@@ -124,7 +124,7 @@ export default function Home() {
       )
       const claimTx = await NFTContractInstance.claim(
         accounts[0],
-        'ipfs://unknown',
+        'https://jsonkeeper.com/b/IBJI',
         proof
       )
       const result = await claimTx.wait()
