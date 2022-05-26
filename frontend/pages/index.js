@@ -250,7 +250,7 @@ export default function Home() {
           <h1 className="title">Welcome to Group 3 Web3Ladies!</h1>
           <div className="description">
             Be one of the first to get Whitelisted for your Web3Ladies
-            certificate. Connect your wallet to claim your spot.
+            NFT. Connect your wallet to claim your spot.
           </div>
           {/* <div className="description">
             {library ? tokenIds : "0"}
