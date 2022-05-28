@@ -4,16 +4,16 @@ A smart contract for NFT Whitelisting using a Merkle Tree.
 View deployed dapp here - [NFT-whitelisting](https://nft-whitelisting-1.vercel.app/)
 
 # 🧰 contracts
-Deployed sample NFT contract can be viewed on [rinkeby.etherscan.io/address/0xa0f1abea489705ca0df5cd2bc8f5f0e2c8eec892](https://rinkeby.etherscan.io/address/0xa0f1abea489705ca0df5cd2bc8f5f0e2c8eec892#code)
+Deployed NFTWhitelist contract can be viewed on [rinkeby.etherscan.io/address/0xa0f1abea489705ca0df5cd2bc8f5f0e2c8eec892](https://rinkeby.etherscan.io/address/0xa0f1abea489705ca0df5cd2bc8f5f0e2c8eec892#code)
 
 ## Prerequisites
 1. Have access to the public (public wallet address) and private key to your Ethereum account.
-2. Have an alchemy account set-up (the free one works!)
+2. Have an alchemy account set-up (the free one works!😎)
 3. Have an etherscan account.
 
 ## Dependencies
 You can use either `npm` or  `yarn` to install dependencies. 
-You can install the dependencies individually below:
+You can install the dependencies individually below 👇:
 
 Hardhat
 ```zsh
@@ -78,7 +78,7 @@ yarn install
 
 You should see a confirmation in your terminal like this:
 ```zsh
-Compiling 1 file with 0.8.0
+Compiling 1 file with 0.8.4
 Compilation finished successfully
 Contract deployed to address: 0x...
 ```
@@ -126,5 +126,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Click on `Connect wallet` 
 - After successful wallet connection, the `Claim` button becomes activated
 - Now, you can click on the `Claim` button to claim your Web3Ladies NFT
-- If your address is on the whitelist, you will be prompted to metamask.
+- If your address is on the whitelist, you will be prompted to metamask 🎉🎁.
 
