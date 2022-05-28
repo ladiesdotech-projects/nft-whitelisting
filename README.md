@@ -127,4 +127,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - After successful wallet connection, the `Claim` button becomes activated
 - Now, you can click on the `Claim` button to claim your Web3Ladies NFT
 - If your address is on the whitelist, you will be prompted to metamask 🎉🎁.
+- You can also disconnect your wallet by clicking on the `disconnect wallet` button at any time 👍.
 
