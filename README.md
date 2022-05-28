@@ -109,6 +109,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 Deployed to [nft-whitelisting](https://nft-whitelisting-1.vercel.app/)
 
 ## Dependencies
+Head on to the frontend directory
+`cd frontend`
+
 Make sure to install all the dependencies with `npm` or `yarn`.
 ```zsh
 yarn install
