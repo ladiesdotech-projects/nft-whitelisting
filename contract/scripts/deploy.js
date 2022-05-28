@@ -25,7 +25,8 @@ async function main() {
     "0x123bcf84529a1fecfd743bf679467a87f659d6aa0f39e7d3ce35c3d67e45bfb0"
   );
 
-  await nft.deployed();
+  const NFTContract = await nft.deployed();
+  console.log("Contract deployed to address:", NFTContract.address)
 }
 
 main()

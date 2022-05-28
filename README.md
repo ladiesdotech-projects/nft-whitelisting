@@ -52,13 +52,13 @@ yarn install
     You should fill out at least the following fields: `RINKEBY_URL`, `RINKEBY_PRIVATE_KEY`.
 
     - To get your `RINKEBY_URL`
-        Go to [Alchemy](https://www.alchemyapi.io/), sign up, create a new App in its dashboard and select the network as Rinkeby, and add the url to your         `.env` file.
+        Go to [Alchemy](https://www.alchemyapi.io/), sign up, create a new App in its dashboard and select the network as Rinkeby, and add the url to your `.env` file.
 
     - To export your private key from Metamask, 
         Open Metamask and
         Go to Account Details > Export Private Key,
         Be aware of NEVER putting real Ether into testing accounts.
-        Add this private key to your `.env` file as RINKEBY_PRIVATE_KEY.
+        Add this private key to your `.env` file as `RINKEBY_PRIVATE_KEY`.
 
 2. Make any modifications to the smart contract in `./contract` and deploy script in `./scripts/deploy.js`
 
