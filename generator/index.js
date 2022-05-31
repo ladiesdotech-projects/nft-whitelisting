@@ -1,44 +1,28 @@
-import fs from "fs";
-import path from "path";
 import keccak256 from "keccak256";
 import { MerkleTree } from "merkletreejs";
-import * as url from "url";
+import addresses from "./whitelistAddresses.js";
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-const configPath = path.join(__dirname, "./configNFT.json");
+const generateWhitelistRoot = () => {
+  const whitelistLeafNodes = addresses.map((addr) => keccak256(addr));
+  const whitelistMerkleTree = new MerkleTree(whitelistLeafNodes, keccak256, {
+    sortPairs: true,
+  });
+  const whitelistRootHash = whitelistMerkleTree.getHexRoot();
 
-const outputPath = path.join(__dirname, "./merkleNFT.json");
+  const leaf = keccak256("0xdcefC49F4F8Abc6fDf5e1B0AcaCC5A4e8FE6dbA2");
+  const proof = whitelistMerkleTree.getHexProof(leaf);
+  const verifyProof = whitelistMerkleTree.verify(
+    proof,
+    leaf,
+    whitelistRootHash
+  );
 
-function throwError(message) {
-  throw new Error(`${message}`);
-}
+  // console.log("VERIFY PROOF: ", verifyProof);
+  // console.log("whitelistMerkleTree: ", whitelistMerkleTree.toString());
+  console.log("whitelistRootHash: ", whitelistRootHash);
 
-// check if config file exists
-if (!fs.existsSync(configPath)) {
-  throwError("Missing config file");
-}
+  return whitelistRootHash;
+};
 
-//Read config file
-const configNFT = await fs.readFileSync(configPath, "utf8");
-const configData = JSON.parse(configNFT);
-
-if (configData["addresses"] === undefined) {
-  throwError("Missing addresses in config file");
-}
-
-const addresses = configData.addresses;
-
-const leaves = addresses.map((x) => keccak256(x));
-const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
-const root = tree.getRoot().toString("hex");
-
-fs.writeFileSync(
-  outputPath,
-  JSON.stringify({ root: root, tree: tree }, null, 2)
-);
-console.log("Merkle tree generated");
-const leaf = keccak256("0x7A77B4a12830B2266783F69192c6cddEd93C959d");
-const proof = tree.getProof(leaf);
-console.log(tree.verify(proof, leaf, root));
-// console.log(root);
+export default generateWhitelistRoot;
+generateWhitelistRoot();
